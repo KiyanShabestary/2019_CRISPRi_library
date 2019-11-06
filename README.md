@@ -3,6 +3,6 @@ This repository contains piplines used for our CRISPRi library paper.
 
 ## Contents
 
-Pipeline for library design
-Pipeline for reads assignment to library
-Pipeline for data analysis after microfluidics-based sorting
+Pipeline for library design/n
+Pipeline for reads assignment to library/n
+Pipeline for data analysis after microfluidics-based sorting/n
