@@ -19,7 +19,7 @@ def read_dict(fasta_file):
 	fh.close()
 	return entry
 
-# Read fasta file with gene names and sequences.
+# Reads fasta file with gene names and sequences.
 def read_fasta(fasta_file):
 
 	entry = {}
@@ -36,7 +36,7 @@ def read_fasta(fasta_file):
 	fh.close()
 	return entry
 
-# Read fasta file of whole genome. Used for off-target screening.
+# Reads fasta file of whole genome. Used for off-target screening.
 def read_genome(fasta_file):
 
 	entry = ''
@@ -102,7 +102,6 @@ class Motif:
 # a directory of starting position matches (for every entries) and in brackets for each starting position 
 # inside the sequence the length between the 1st and 2nd part of the signal (1st number) and the photospacer
 # (2nd number)
-
 def find_sequence(deviation, motif, entries, subentries):
 	#print '#find_sequence'
 	solutions = {}
@@ -142,7 +141,7 @@ def find_sequence(deviation, motif, entries, subentries):
 
 	return solutions
 
-
+# Makes reverse strand
 def reverse_strand(fwd_strand):
 	rev_strand = ''
 	# find complementary 3'-5'
@@ -172,8 +171,6 @@ def reverse_strand(fwd_strand):
 #	 b. If none go for the one with the lowest minScore
 # 3) a. Find another one not close (>10 bp) and take it if good
 #	 b. If none go for the one with the lowest minScore
-
-
 def get_two_best(results, genome): 
 	#print '#get_two_best'
 	best_results = {}
@@ -474,6 +471,7 @@ def main():
 	print 'start time: %s \nend time: %s' % (str(now), str(then))
 	print 'script completed'
 
+# Test function on small subset
 def test():
 	subentries = read_dict('test_ORF.txt')
 
@@ -491,3 +489,4 @@ def test():
 
 
 main()
+#test()
