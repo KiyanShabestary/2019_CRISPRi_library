@@ -424,10 +424,10 @@ def not_good(sequence):
 
 
 def main():
-	# Defining the subset
-
+	
+	# Defining the subset for parallelization
 	if int(sys.argv[1]) == 0 : subset_name = 'subsets/subset.txt' 
-	else : subset_name = 'subsets/subset' + str(sys.argv[1])+'.txt' 
+	else : subset_name = 'subsets/subset' + str(sys.argv[1])+'.txt'  #Afterwards all subsets results are assembled
 
 	# Initialisation, finding all sgRNAs
 
@@ -451,6 +451,7 @@ def main():
 
 	if str(sys.argv[1]) == 0 : library_name = 'results/160704_sgRNA_Library.txt' 
 	else : library_name = 'results/160704_sgRNA_Library' + str(sys.argv[1])+'.txt' 
+	#Afterwards all library parts are merged together (f.i. using a cat function in the terminal)
 
 	fh = open(library_name, 'w')
 
