@@ -1,4 +1,4 @@
-# sgRNA_Library  -- Kiyan Shabestary 14.03.16
+# library_design  -- Kiyan Shabestary 14.03.16
 # This script aims to find two most unique sgRNA per ORF to create a library. 
 
 ########################################## Secondary modules ############################################
