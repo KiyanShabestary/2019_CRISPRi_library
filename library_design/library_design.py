@@ -249,7 +249,7 @@ def get_two_best(results, genome):
 			for sol in results[entry].keys():
 				minScore = 0
 				off_targets = find_off_target(results[entry][sol][1], genome)
-				print off_targets
+
 				for event in range(len(off_targets)):
 					if (off_targets[event][1]==0): 
 						minScore += 1	
@@ -266,7 +266,6 @@ def get_two_best(results, genome):
 				#Take the one closest
 				closest_position = min(candidates)
 				best_result[closest_position] = results[entry][sol][1]
-			#else case
 
 		best_results[entry] = best_result
 
@@ -361,7 +360,7 @@ def find_off_target(fwd_target, genome):
 
 		if i1 == (len(fwd_target_CTN)) and ((Sum1 <= 1 and Sum2 == 0) or (Sum1 == 0 and Sum2 <= 2)):# Repechage
 			Seq = genome[start:start+len(fwd_target_CTN)]
-			sys.stdout.write('Fwd target (CTN) binds @%s %s\n' %(str(start),str(Seq)))
+			#sys.stdout.write('Fwd target (CTN) binds @%s %s\n' %(str(start),str(Seq)))
 			off_targets.append([start,Sum1])
 
 	# ** for rev_target **
@@ -472,6 +471,8 @@ def main():
 	print 'start time: %s \nend time: %s' % (str(now), str(then))
 	print 'script completed'
 
+	return 0
+
 # Test function on small subset
 def test():
 	subentries = read_dict('test_ORF.txt')
@@ -486,7 +487,9 @@ def test():
 
 	# 2) Find the two best using a fitness function
 	print 'finding the two best...'
-	best_results = get_two_best(results, genome) 
+	best_results = get_two_best(results, genome)
+
+	return 0
 
 
 main()
