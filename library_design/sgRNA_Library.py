@@ -6,7 +6,6 @@
 
 import sys
 import datetime
-import numpy as np
 
 # Function primarly used for parallelization of the code
 def read_dict(fasta_file):
