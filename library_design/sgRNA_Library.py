@@ -489,6 +489,5 @@ def test():
 	print 'finding the two best...'
 	best_results = get_two_best(results, genome) 
 
-	print best_results
 
 main()
