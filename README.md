@@ -3,7 +3,7 @@ This repository contains piplines used for our CRISPRi library paper.
 
 ## Contents
 
-Pipeline for library design.
+Pipeline for library design, including demo on small gene subset.
 
 Pipeline for reads assignment to library.
 
