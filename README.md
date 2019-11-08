@@ -7,4 +7,4 @@ Pipeline for library design, including demo on small gene subset.
 
 Pipeline for reads assignment to library, including demo on small dataset.
 
-Pipeline for data analysis after microfluidics-based sorting, including data analysis.
+Pipeline for data analysis after microfluidics-based sorting, including data from the paper.
