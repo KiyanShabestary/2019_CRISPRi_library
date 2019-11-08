@@ -1,4 +1,4 @@
-## How to run library design script on small gene subset
+## library_design demo
 
 All files needed for the script are located in the input folder. 
 
