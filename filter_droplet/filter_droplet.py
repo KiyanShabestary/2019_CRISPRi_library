@@ -1,4 +1,4 @@
-# 23.10.19 - Kiyan Shabestary
+# 23.09.19 - Kiyan Shabestary
 # This script aims to filter data obtained after droplet sorting.
 
 # PART 1: Set low reads (<32) to 0, compute relative reads and filter out replicate with > 10-fold differences
@@ -8,10 +8,10 @@ import pandas as pd
 
 def read_data():
 
-	file_ = 'raw_data_matrix.txt'
+	file_ = 'input/data.txt'
 	fh=open(file_)
 
-	samples = ['Lib36_gDNA2','Lib36_sorted1','Lib36_sorted2','Lib66_sorted1','Lib66_sorted2','Lib66_gDNA2']
+	samples = ['Lib36_gDNA','Lib36_sorted1','Lib36_sorted2','Lib66_sorted1','Lib66_sorted2','Lib66_gDNA']
 	dicts_={}
 
 	total = [0,0,0,0,0,0,0]
@@ -37,7 +37,7 @@ def read_data():
 
 def make_relative_data(data,total):
 
-	samples = ['Lib36_gDNA2','Lib36_sorted1','Lib36_sorted2','Lib66_sorted1','Lib66_sorted2','Lib66_gDNA2']
+	samples = ['Lib36_gDNA','Lib36_sorted1','Lib36_sorted2','Lib66_sorted1','Lib66_sorted2','Lib66_gDNA']
 
 	for sgRNA in data.keys():
 		i=0
@@ -54,7 +54,7 @@ def filter_(dict_):
 	low_treshold=0.1
 	high_treshold=10.0
 
-	return (low_treshold<=ratio(float(dict_['Lib36_sorted1']),float(dict_['Lib36_sorted2']))<=high_treshold)*(low_treshold<=ratio(float(dict_['Lib66_sorted1']),float(dict_['Lib66_sorted2']))<=high_treshold)*(low_treshold<=ratio(float(dict_['Lib72_sorted1']),float(dict_['Lib72_sorted2']))<=high_treshold)
+	return (low_treshold<=ratio(float(dict_['Lib36_sorted1']),float(dict_['Lib36_sorted2']))<=high_treshold)*(low_treshold<=ratio(float(dict_['Lib66_sorted1']),float(dict_['Lib66_sorted2']))<=high_treshold)
 
 # To handle 0/0 types of calculations
 def ratio(a,b):
@@ -81,13 +81,13 @@ def filter_data(dicts_):
 # Keeping all data until the end since duplicates need to be removed and therefore more accurate when all sampels are present
 def write_data(data):
 
-	outfile_name='191023_filtered_data.txt'
+	outfile_name='results/filtered_data.txt'
 	fh=open(outfile_name,'w')
 
-	fh.write('sgRNA\tLib36_gDNA2\tLib36_sorted1\tLib36_sorted2\tLib66_sorted1\tLib66_sorted2\tLib66_gDNA2\n')
+	fh.write('sgRNA\tLib36_gDNA\tLib36_sorted1\tLib36_sorted2\tLib66_sorted1\tLib66_sorted2\tLib66_gDNA\n')
 
 	for sgRNA in data.keys():
-		fh.write(sgRNA+'\t'+str(data[sgRNA]['Lib36_gDNA2'])+'\t'+str(data[sgRNA]['Lib36_sorted1'])+'\t'+str(data[sgRNA]['Lib36_sorted2'])+'\t'+str(data[sgRNA]['Lib66_sorted1'])+'\t'+str(data[sgRNA]['Lib66_sorted2'])+'\t'+str(data[sgRNA]['Lib66_gDNA2'])+'\n')
+		fh.write(sgRNA+'\t'+str(data[sgRNA]['Lib36_gDNA'])+'\t'+str(data[sgRNA]['Lib36_sorted1'])+'\t'+str(data[sgRNA]['Lib36_sorted2'])+'\t'+str(data[sgRNA]['Lib66_sorted1'])+'\t'+str(data[sgRNA]['Lib66_sorted2'])+'\t'+str(data[sgRNA]['Lib66_gDNA'])+'\n')
 
 	fh.close()
 	return 0
@@ -95,16 +95,16 @@ def write_data(data):
 # Get top n fraction for sorted samples only, transfer that to a list and finally use the list to check which sgRNA is here and transform that into a dict
 # UPDATE: Get top fraction for sorted/gDNA ratio
 def get_top_fractions(n):
-	df=pd.read_csv('191023_filtered_data.txt',delimiter='\t')
+	df=pd.read_csv('results/filtered_data.txt',delimiter='\t')
 	#print(df.head())
 	# Removing duplicates
-	df=df.drop_duplicates(subset=['Lib36_gDNA2', 'Lib36_sorted1','Lib36_sorted2', 'Lib66_sorted1','Lib66_sorted2', 'Lib66_gDNA2'], keep=False)
+	df=df.drop_duplicates(subset=['Lib36_gDNA', 'Lib36_sorted1','Lib36_sorted2', 'Lib66_sorted1','Lib66_sorted2', 'Lib66_gDNA'], keep=False)
 
 	# Defining new columns as ration sorted/gDNA
-	df['Lib36_sorted1_ratio']=df['Lib36_sorted1']/df['Lib36_gDNA2']
-	df['Lib36_sorted2_ratio']=df['Lib36_sorted2']/df['Lib36_gDNA2']
-	df['Lib66_sorted1_ratio']=df['Lib66_sorted1']/df['Lib66_gDNA2']
-	df['Lib66_sorted2_ratio']=df['Lib66_sorted2']/df['Lib66_gDNA2']
+	df['Lib36_sorted1_ratio']=df['Lib36_sorted1']/df['Lib36_gDNA']
+	df['Lib36_sorted2_ratio']=df['Lib36_sorted2']/df['Lib36_gDNA']
+	df['Lib66_sorted1_ratio']=df['Lib66_sorted1']/df['Lib66_gDNA']
+	df['Lib66_sorted2_ratio']=df['Lib66_sorted2']/df['Lib66_gDNA']
 
 	# Get top fractions
 	df_Lib36_1=df.sort_values(by=['Lib36_sorted1_ratio'], ascending=False)
@@ -130,7 +130,7 @@ def get_top_fractions(n):
 # Get a table of dict, go through all sgRNAs and write the file
 def write_final_data(data,all_sgRNAs, n):
 
-	outfile_name='all_samples_counts_TOP'+str(n)+'.txt'
+	outfile_name='results/all_samples_counts_TOP'+str(n)+'.txt'
 	fh=open(outfile_name,'w')
 
 	fh.write('\tLib36_sorted1\tLib36_sorted2\tLib66_sorted1\tLib66_sorted2\n')
@@ -141,11 +141,10 @@ def write_final_data(data,all_sgRNAs, n):
 
 	return 0
 
-
 # Returns list of all sgRNAs
 def read_sgRNA_ref_file():
 
-	file_ = '../160709_LibraryIII.txt'
+	file_ = '../map_reads/input/sgRNA_library.txt'
 	fh=open(file_)
 
 	all_sgRNAs={}
@@ -184,7 +183,7 @@ def make_dicts(all_lists):
 	for sgRNA in all_lists[3]:
 		Lib66_sorted2[sgRNA]=1
 
-	return [Lib36_sorted1,Lib36_sorted2,Lib66_sorted1,Lib66_sorted2,Lib72_sorted1,Lib72_sorted2]
+	return [Lib36_sorted1,Lib36_sorted2,Lib66_sorted1,Lib66_sorted2]
 
 def main():
 	#PART 1: Read data
@@ -193,7 +192,7 @@ def main():
 	data=make_relative_data(data,total) # Make relative data
 	data=filter_data(data) # Filter out replicates with more than 10-fold differences
 
-	write_data(data) #
+	write_data(data)
 
 	#PART 2: Pandas treatment to get top fractions
 
