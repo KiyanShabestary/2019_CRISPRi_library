@@ -1,0 +1,7 @@
+# sgRNA Recognition pattern
+C	7
+C	8
+# intervening unimportant bases
+*	20-25
+# 
+T	8
