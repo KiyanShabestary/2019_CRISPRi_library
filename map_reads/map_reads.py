@@ -80,24 +80,12 @@ def read_library(fasta_file):
 	fh.close()
 	return entry
 
-# Test function
-def test():
-	#Test read_library	OK
-	library = read_library('160709_LibraryIII.txt')
-	#print library
-
-	print align('CAGTGATAGAGATACTGGGAGCTAGGAGTTAACAATTATGGTTTCTGTTTTAGAGCTAGAAATAGCAAGTTAAAAT', library)
-	#local_blast('GATAGAGATACTGGGAG',0.001)#Control part of the constant region
-	#alignment_results=map_reads('sample_test.fastq','duplicate_ORF.txt')
-	#print_results(alignment_results, 'results_library.txt')
-	return 0
-
 def main():
 
-	results_library_file = 'counts.txt' 			#Output: Counts
-	seq_data_file = 'filtered_reads.fastq'			#Input: Reads in fasta format
-	duplicate_ORF_file = 'duplicate_sgRNAs.txt' 	#Output: Get a list of reads that align to  multiple sgRNAs
-	library = read_library('library_file.txt')		#Input: Library file for referencing
+	results_library_file = 'results/counts.txt' 				#Output: Counts
+	seq_data_file = 'input/test.filtered.fastq'					#Input: Reads in fasta format
+	duplicate_ORF_file = 'results/duplicate_sgRNAs.txt' 		#Output: Get a list of reads that align to  multiple sgRNAs
+	library = read_library('input/sgRNA_library.txt')			#Input: Library file for referencing
 
 	alignment_results=map_reads(library,seq_data_file,duplicate_ORF_file)
 	print_results(alignment_results, results_library_file)
