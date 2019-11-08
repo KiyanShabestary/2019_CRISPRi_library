@@ -18,7 +18,7 @@ def read_dict(fasta_file):
     fh.close()
     return entry
 
-# Reads fasta file with gene names and sequences.
+# Reads fasta file with gene names and sequences and assign a name EntryX to each ncRNA.
 def read_fasta(fasta_file):
 	n = 1
 	entry = {}
@@ -437,12 +437,12 @@ def main():
 
 	# 1) Find all sgRNAs
 	now = datetime.datetime.now()
-	motif = Motif('motif.txt')
-	entries = read_fasta('NC_000911.txt')
-	genome = read_genome('Synechocystis_whole_genome.txt')
+	motif = Motif('input/motif.txt')
+	entries = read_fasta('input/NC_000911.txt')
+	genome = read_genome('input/Synechocystis_whole_genome.txt')
 
 
-	key_name = 'results/160704_keys.txt'
+	key_name = 'results/ncRNAs_keys.txt'
 	gh = open(key_name, 'w')
 
 	for entry in entries.keys():
@@ -460,7 +460,7 @@ def main():
 
 	# Writing the file
 
-	library_name = 'results/160705_sgRNA_Library_ncRNA.txt' 
+	library_name = 'results/sgRNA_Library_ncRNA.txt' 
 
 	fh = open(library_name, 'w')
 
@@ -483,26 +483,7 @@ def main():
 
 	return 0
 
-def test():
-	subentries = read_dict('test_ORF.txt')
-
-	# 1) Find all sgRNAs
-	now = datetime.datetime.now()
-	motif = Motif('motif.txt')
-	entries = read_fasta('NC000911.txt')
-	#entries = read_fasta('test.txt')
-	genome = read_genome('Synechocystis_whole_genome.txt')
-	#genome = read_genome('test_genome.txt')
-	print 'screening for a lot of sgRNAs!...'
-	results = find_sequence(1, motif, entries, subentries)
-
-	# 2) Find the two best using a fitness function
-	print 'finding the two best...'
-	best_results = get_two_best(results, genome) 
-
-	return 0
-
-
-
 main()
-#test()
+
+
+
