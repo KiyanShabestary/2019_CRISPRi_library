@@ -92,13 +92,21 @@ def write_data(data):
 	fh.close()
 	return 0
 
-# Get top n fraction for sorted samples only, transfer that to a list and finally use the list to check which sgRNA is here and transform that into a dict
-# UPDATE: Get top fraction for sorted/gDNA ratio
-def get_top_fractions(n):
+# Get a list of sgRNA with ratio sorted/unsorted >=3 for sorted samples only.
+# In details,
+#	1) Remove duplicates
+#	For each sample:
+#	2) Order by decreasing ratio sorted/unsorted
+#	3) Apply cutoff
+#	4) Resulting list of sgRNA (sgRNA identifer) stored in a list which will be counted in the next step
+def apply_cutoff(n):
 	df=pd.read_csv('results/filtered_data.txt',delimiter='\t')
 	#print(df.head())
 	# Removing duplicates
 	df=df.drop_duplicates(subset=['Lib36_gDNA', 'Lib36_sorted1','Lib36_sorted2', 'Lib66_sorted1','Lib66_sorted2', 'Lib66_gDNA'], keep=False)
+
+	# Data before cutoff
+	df.to_csv('results/filtered_data_duplicates_dropped.txt')
 
 	# Defining new columns as ration sorted/gDNA
 	df['Lib36_sorted1_ratio']=df['Lib36_sorted1']/df['Lib36_gDNA']
@@ -106,31 +114,31 @@ def get_top_fractions(n):
 	df['Lib66_sorted1_ratio']=df['Lib66_sorted1']/df['Lib66_gDNA']
 	df['Lib66_sorted2_ratio']=df['Lib66_sorted2']/df['Lib66_gDNA']
 
-	# Get top fractions
+	# Apply cutoff
 	df_Lib36_1=df.sort_values(by=['Lib36_sorted1_ratio'], ascending=False)
-	df_Lib36_1=df_Lib36_1.sgRNA.head(n)
-	list36_1=df_Lib36_1.tolist()
+	filter = df_Lib36_1['Lib36_sorted1_ratio'] >= n
+	df_Lib36_1=df_Lib36_1.sgRNA[filter]
 
 	df_Lib36_2=df.sort_values(by=['Lib36_sorted2_ratio'], ascending=False)
-	df_Lib36_2=df_Lib36_2.sgRNA.head(n)
-	list36_2=df_Lib36_2.tolist()
+	filter = df_Lib36_2['Lib36_sorted2_ratio'] >= n
+	df_Lib36_2=df_Lib36_2.sgRNA[filter]
 
 	df_Lib66_1=df.sort_values(by=['Lib66_sorted1_ratio'], ascending=False)
-	df_Lib66_1=df_Lib66_1.sgRNA.head(n)
-	list66_1=df_Lib66_1.tolist()
+	filter = df_Lib66_1['Lib66_sorted1_ratio'] >= n
+	df_Lib66_1=df_Lib66_1.sgRNA[filter]
 
 	df_Lib66_2=df.sort_values(by=['Lib66_sorted2_ratio'], ascending=False)
-	df_Lib66_2=df_Lib66_2.sgRNA.head(n)
-	list66_2=df_Lib66_2.tolist()
+	filter = df_Lib66_2['Lib66_sorted2_ratio'] >= n
+	df_Lib66_2=df_Lib66_2.sgRNA[filter]
 
 	all_dicts=make_dicts([df_Lib36_1,df_Lib36_2,df_Lib66_1,df_Lib66_2])
 
 	return all_dicts
 
 # Get a table of dict, go through all sgRNAs and write the file
-def write_final_data(data,all_sgRNAs, n):
+def write_final_data(data,all_sgRNAs):
 
-	outfile_name='results/all_samples_counts_TOP'+str(n)+'.txt'
+	outfile_name='results/enrichment_results.txt'
 	fh=open(outfile_name,'w')
 
 	fh.write('\tLib36_sorted1\tLib36_sorted2\tLib66_sorted1\tLib66_sorted2\n')
@@ -190,21 +198,21 @@ def main():
 	data,total=read_data() # Set <32 to 0
 	total=[19031710,3748295,2754006,3089167,2943335,21579095] # Total number of reads obtained from pandas when all duplicates except one were removed
 	data=make_relative_data(data,total) # Make relative data
-	data=filter_data(data) # Filter out replicates with more than 10-fold differences
+	data=filter_data(data) # Filter out replicates with more than 10-fold differences. Note that replicates with 0 are kept.
 
 	write_data(data)
 
-	#PART 2: Pandas treatment to get top fractions
+	#PART 2: Pandas treatment to count sgRNAs above cutoff for each sample
 
 	#Reference
 	all_sgRNAs=read_sgRNA_ref_file()
-	n_s = [10,100,200,250,500,850,1000]
 
-	for n in n_s:
-		all_lists = get_top_fractions(n)
+	n=3 # cutoff value, take into account sgRNAs where ratio sorted/unsorted >= 3
 
-		#write file
-		write_final_data(all_lists,all_sgRNAs, n)
+	all_lists = apply_cutoff(n)
+
+	#write file
+	write_final_data(all_lists,all_sgRNAs)
 
 	return 0
 
