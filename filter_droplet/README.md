@@ -9,7 +9,8 @@ Data is treated as follow:
 3. Relative data is computed per sample.
 4. Duplicate sgRNAs are removed.
 5. Ratios sorted/unsorted (obtained from gDNA) are computed.
-6. sgRNAs in each top fraction are counted to make a final list.
+6. sgRNAs in with a ratio sorted/unsorted superior to 3 are selected.
+7. Appearances are selected to make a final list.
 
 To run the script, go to 2019_CRISPRi_library/filter_droplet and execute the following command in a terminal:
 
