@@ -8,7 +8,7 @@ Data is treated as follow:
 2. sgRNAs with at least one sample with 10-fold difference within replicates are removed.
 3. Relative data is computed per sample.
 4. Duplicate sgRNAs are removed.
-5. Ratios sorted/unsorted (obtained from gDNA) are computed.
+5. Ratios sorted/unsorted (obtained from sorted fraction/genomic DNA) are computed.
 6. sgRNAs with a ratio sorted/unsorted superior to 3 are selected.
 7. Appearances are selected to make a final list.
 
