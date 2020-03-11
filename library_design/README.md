@@ -15,3 +15,8 @@ To make the sgRNA library targeting ncRNAs, type:
 `python library_design_ncRNAs.py`
 
 Not that this script runs on the whole ncRNA dataset here, so it will take much longer to complete.
+
+Dependencies:
+- python2
+- sys
+- datetime
