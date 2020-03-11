@@ -1,5 +1,3 @@
-#!usr/bin/ncbi-blast-2.6.0+
-
 # map_reads -- Kiyan Shabestary 26.02.18
 # This script intends to map trimmed and filtered NGS reads to our sgRNA library. 
 
@@ -40,7 +38,7 @@ def map_reads(library,reads_file, duplicate_entry_file):
 
 	return perfect_counts
 
-# Align to every entry in ths sgRNA library
+# Align to every entry in the sgRNA library
 def align(query_string,library):
 	# Convert the sgRNA photospacer string in a fasta file
 	alignment_results=[]
