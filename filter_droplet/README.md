@@ -17,5 +17,5 @@ To run the script, go to 2019_CRISPRi_library/filter_droplet and execute the fol
 `python filter_droplet.py`
 
 Dependencies:
-python3/n
-pandas/n
+- python3
+- pandas
